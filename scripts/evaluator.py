@@ -9,4 +9,5 @@ class Evaluator:
         self.evaluator = i2v.make_i2v_with_chainer(model, list)
 
     def evaluate(self, image, tags):
-        return self.evaluator.estimate_specific_tags([img], tags)
+        result = self.evaluator.estimate_specific_tags([img], tags)[0]
+        return sum(result.values)
