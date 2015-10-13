@@ -1,37 +1,32 @@
-import sys
+import sys, random
 import numpy as np
 from PIL import Image
 
 class DNA:
 
-    def __init__(self):
-        pass
-
-    def from_image(self, image):
-        self.gene = np.asarray(image, dtype=np.float32)
-        if self.gene.ndim == 2:
-            self.gene = np.empty((self.gene.shape[0], self.gene.shape[1], 3), dtype=np.float32)
-            self.gene[:] = self.gene.reshape(self.gene.shape[0], self.gene.shape[1], 1)
-        elif self.gene.ndim == 3:
-            self.gene = self.gene[:,:,:3]
-        else:
-            raise TypeError("unsupported image!")
+    def __init__(self, size=(320,320,3)):
+        self.size = size
+        self.gene = np.random.randint(0, high=255, size=size)
 
     def as_image(self):
-        return Image.fromarray(self.gene)
+        return Image.fromarray(self.gene, 'RGB')
 
-    def wellness(self, evaluator):
-        return evaluator.evaluate(self.gene)
-
-    def crossover(self, dna):
-        child = DNA()
+    def crossover(self, partner):
+        child = DNA(size=self.size)
+        for i in range(len(self.gene)):
+            midpoint = np.random.randint(0, high=len(self.gene[i]))
+            for j in range(len(self.gene[i])):
+                if j > midpoint: child.gene[i,j] = self.gene[i,j]
+                else: child.gene[i,j] = partner.gene[i,j]
         return child
 
     def mutate(self, mutation_rate):
-        pass
+        for i in range(len(self.gene)):
+            for j in range(len(self.gene[i])):
+                if (random.random() < mutation_rate):
+                    self.gene[i,j] = np.random.randint(0, high=255, size=3)
 
-
-delihiros = Image.open("./resources/delihiros.png")
-dna = DNA()
-dna.from_image(delihiros)
-print dna.gene
+#dna = DNA()
+#partner = DNA()
+#dna.crossover(partner)
+#dna.mutate(0.1)
