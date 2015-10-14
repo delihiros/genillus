@@ -10,3 +10,7 @@ class Evaluator:
     def evaluate(self, gene, tags):
         result = self.evaluator.estimate_specific_tags([gene], tags)[0]
         return sum(result.values())
+
+    def evaluate_all(self, genes, tags):
+        results = self.evaluator.estimate_specific_tags(genes, tags)
+        return [sum(r.values()) for r in results]

@@ -13,23 +13,24 @@ class Genillus:
             self.generation.append(dna.DNA(size=size))
     
     def step(self, gen):
-        mating_pool = []
         s = 0.0
         best_score = 0
-        best_image = 0
-        for i in range(self.generation_set):
-            print "evaluating ", i, "th image... "
-            self.generation[i].score = self.evaluator.evaluate(self.generation[i].as_image(), self.tags)
-            print self.generation[i].score
-            if best_score < self.generation[i].score:
-                best_score = self.generation[i].score
-                best_image = i
-            s += self.generation[i].score
+        best_image = None
+
+        scores = self.evaluator.evaluate_all([c.as_image() for c in self.generation], self.tags)
+        for i, (c, score) in enumerate(zip(self.generation, scores)):
+            print i, c, score
+            c.score = score
+            s += score
+            if best_score < score:
+                best_score = score
+                best_image = c
 
         print "saving best image"
-        self.generation[best_image].as_image().save("generation_" + str(gen) + ".png")
+        best_image.as_image().save("generation_" + str(gen) + ".png")
 
         print "making mating pool"
+        mating_pool = []
         for i in range(self.generation_set):
             n = int(self.generation[i].score / s)
             for j in range(n):
