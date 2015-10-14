@@ -18,7 +18,7 @@ class Genillus:
         best_score = 0
         best_image = 0
         for i in range(self.generation_set):
-            print "evaluating ", i, "th image... ",
+            print "evaluating ", i, "th image... "
             self.generation[i].score = self.evaluator.evaluate(self.generation[i].as_image(), self.tags)
             print self.generation[i].score
             if best_score < self.generation[i].score:
@@ -27,7 +27,7 @@ class Genillus:
             s += self.generation[i].score
 
         print "saving best image"
-        self.generation[best_image].as_image().save("generation_" + str(gen), ".png")
+        self.generation[best_image].as_image().save("generation_" + str(gen) + ".png")
 
         print "making mating pool"
         for i in range(self.generation_set):
@@ -56,7 +56,7 @@ print "done making evaluator"
 print "making genillus"
 genillus = Genillus(ev, ["hatsune miku"], size=(100, 100, 3))
 print "done making genillus"
-for i in range(10):
+for i in range(100):
     print "step", i
     best_score = genillus.step(i)
     print "best score", best_score
