@@ -10,7 +10,7 @@ class DNA:
         self.gene[:,:,3] = 255
 
     def as_image(self):
-        return Image.fromarray(self.gene, 'RGB')
+        return Image.fromarray(self.gene, 'RGBA')
 
     def crossover(self, partner):
         child = DNA(size=self.size)
