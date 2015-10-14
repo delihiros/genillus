@@ -4,11 +4,12 @@ import evaluator
 
 class Genillus:
 
-    def __init__(self, evaluator, tags, size=(320,320,3), generation_set=200, mutation_rate=0.01):
+    def __init__(self, evaluator, tags, size=(320,320,4), generation_set=200, mutation_rate=0.01):
         self.evaluator = evaluator
         self.tags = tags
         self.generation_set = generation_set
         self.generation = []
+        self.mutation_rate = mutation_rate
         for i in range(generation_set):
             self.generation.append(dna.DNA(size=size))
     
@@ -32,7 +33,7 @@ class Genillus:
         print "making mating pool"
         mating_pool = []
         for i in range(self.generation_set):
-            n = int(self.generation[i].score / s)
+            n = int(self.generation_set * self.generation[i].score / s)
             for j in range(n):
                 mating_pool.append(self.generation[i])
         
@@ -55,7 +56,7 @@ ev = evaluator.Evaluator(
 print "done making evaluator"
 
 print "making genillus"
-genillus = Genillus(ev, ["hatsune miku"], size=(100, 100, 3))
+genillus = Genillus(ev, ["hatsune miku"], size=(100, 100, 4))
 print "done making genillus"
 for i in range(100):
     print "step", i
